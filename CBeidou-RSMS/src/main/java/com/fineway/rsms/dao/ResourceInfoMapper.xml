@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.fineway.rsms.dao.ResourceInfoMapper">
+	<resultMap id="resourceInfoMap"	type="com.fineway.rsms.bean.ResourceInfo">
+		<id column="resourceInfoId"  property="resourceInfoId" />
+		<result column="resourceId" jdbcType="INTEGER" property="resourceId"/>
+		<result column="resourceType" jdbcType="VARCHAR" property="resourceType"/>
+		<result column="resourceName" jdbcType="VARCHAR" property="resourceName"/>
+		<result column="resourceDescription" jdbcType="VARCHAR" property="resourceDescription"/>
+		<result column="resourceProvider" jdbcType="VARCHAR" property="resourceProvider"/>
+		<result column="resourceInstitution" jdbcType="DATE" property="resourceInstitution"/>
+	</resultMap>
+	<resultMap id="resourceVoMap"	type="com.fineway.rsms.vo.ResourceVO">
+	    <result column="resourceInfoId" jdbcType="INTEGER" property="resourceInfoId" />
+		<result column="resourceId" jdbcType="INTEGER" property="resourceId"/>
+		<result column="resourceType" jdbcType="VARCHAR" property="resourceType"/>
+		<result column="resourceName" jdbcType="VARCHAR" property="resourceName"/>
+		<result column="resourceDescription" jdbcType="VARCHAR" property="resourceDescription"/>
+		<result column="resourceProvider" jdbcType="VARCHAR" property="resourceProvider"/>
+		<result column="resourceInstitution" jdbcType="DATE" property="resourceInstitution"/>
+		<result column="resourceAuditStatus" jdbcType="VARCHAR" property="resourceAuditStatus"/>
+		<result column="resourceAuditor" jdbcType="VARCHAR" property="resourceAuditor"/>
+		<result column="resourceAuditTime" jdbcType="DATE" property="resourceAuditTime"/>
+		<result column="resourceReleaseStatus" jdbcType="VARCHAR" property="resourceReleaseStatus"/>
+		<result column="resourcePublisher" jdbcType="VARCHAR" property="resourcePublisher"/>
+		<result column="resourceReleaseTime" jdbcType="DATE" property="resourceReleaseTime"/>
+		<result column="creater" jdbcType="VARCHAR" property="creater"/>
+		<result column="createTime" jdbcType="DATE" property="createTime"/>
+		<result column="modifier" jdbcType="VARCHAR" property="modifier"/>
+		<result column="modifyTime" jdbcType="DATE" property="modifyTime"/>
+		<result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+	</resultMap>
+	<sql id="property">
+		resourceId,resourceType,resourceName,resourceDescription,resourceProvider,resourceInstitution 
+	</sql>
+	<insert id="save" parameterType="com.fineway.rsms.bean.ResourceInfo">
+		insert into resource_info(
+		<include refid="property"/>
+		) values
+		(#{resourceId,jdbcType=INTEGER},#{resourceType,jdbcType=VARCHAR},#{resourceName,jdbcType=VARCHAR},#{resourceDescription,jdbcType=VARCHAR},#{resourceProvider,jdbcType=DATE},
+		#{resourceInstitution,jdbcType=VARCHAR})
+	</insert>
+	<delete id="delete" parameterType="int">
+		delete from resource_info where resourceInfoId=#{resourceInfoId}
+	</delete>
+	<update id="update"	parameterType="com.fineway.rsms.bean.ResourceInfo">
+		update resource_info set resourceType=#{resourceType},resourceName=#{resourceName},resourceDescription=#{resourceDescription},
+		resourceProvider=#{resourceProvider},resourceInstitution=#{resourceInstitution} where resourceInfoId=#{resourceInfoId}
+	</update>
+	<select id="findByCondition" parameterType="com.fineway.rsms.bean.ResourceInfo" resultMap="resourceInfoMap">
+		select resourceInfoId,<include refid="property"/> from resource_info where 1=1
+			<if test="resourceId != null and resourceId !=''"> AND resourceId = #{resourceId} </if>
+			<if test="resourceType != null and resourceType !=''"> AND resourceType = #{resourceType} </if>
+			<if test="resourceName != null and resourceName !=''"> AND resourceName like '%${resourceName}%' </if>
+			<if test="resourceDescription != null and resourceDescription !=''"> AND resourceDescription = #{resourceDescription} </if>
+			<if test="resourceProvider != null and resourceProvider !=''"> AND resourceProvider like '%${resourceProvider}%' </if>
+			<if test="resourceInstitution != null and resourceInstitution !=''"> AND resourceInstitution = #{resourceInstitution} </if>
+	</select>
+	<select id="getResourceInfo" parameterType="com.fineway.rsms.vo.ResourceVO" resultMap="resourceVoMap">
+		SELECT t.resourceAuditStatus,t1.resourceName FROM resource_register_record t LEFT JOIN resource_info t1 ON t.resourceId=t1.resourceId where 1=1
+			<if test="resourceAuditStatus != null and resourceAuditStatus !=''"> AND t.resourceAuditStatus = #{resourceAuditStatus} </if>
+			<if test="resourceName != null and resourceName !=''"> AND t1.resourceName like '%${resourceName}%' </if>
+	</select>
+	<select id="getResourceInfoById" parameterType="int" resultMap="resourceVoMap">
+		SELECT t.resourceAuditStatus,t1.resourceName FROM resource_register_record t LEFT JOIN resource_info t1 ON t.resourceId=t1.resourceId where t.resourceId=#{resourceId}
+	</select>
+</mapper>

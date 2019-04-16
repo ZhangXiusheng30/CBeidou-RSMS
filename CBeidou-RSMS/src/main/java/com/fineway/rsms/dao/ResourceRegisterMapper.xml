@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.fineway.rsms.dao.ResourceRegisterMapper">
+	<resultMap id="resourceRegisterMap" type="com.fineway.rsms.bean.ResourceRegister">
+	    <id column="resourceId"  property="resourceId" />
+		<result column="resourceAuditStatus" jdbcType="VARCHAR" property="resourceAuditStatus"/>
+		<result column="resourceAuditor" jdbcType="VARCHAR" property="resourceAuditor"/>
+		<result column="resourceAuditTime" jdbcType="DATE" property="resourceAuditTime"/>
+		<result column="resourceReleaseStatus" jdbcType="VARCHAR" property="resourceReleaseStatus"/>
+		<result column="resourcePublisher" jdbcType="VARCHAR" property="resourcePublisher"/>
+		<result column="resourceReleaseTime" jdbcType="DATE" property="resourceReleaseTime"/>
+		<result column="creater" jdbcType="VARCHAR" property="creater"/>
+		<result column="createTime" jdbcType="DATE" property="createTime"/>
+		<result column="modifier" jdbcType="VARCHAR" property="modifier"/>
+		<result column="modifyTime" jdbcType="DATE" property="modifyTime"/>
+		<result column="remarks" jdbcType="VARCHAR" property="remarks"/>
+	</resultMap>
+	<sql id="property">
+		resourceAuditStatus,resourceAuditor,resourceAuditTime,
+		resourceReleaseStatus,resourcePublisher,resourceReleaseTime,
+		creater,createTime,modifier,modifyTime,remarks
+	</sql>
+	<insert id="save" parameterType="com.fineway.rsms.bean.ResourceRegister" useGeneratedKeys="true" keyProperty="resourceId">
+		insert into resource_register_record(
+		<include refid="property"/>
+		)
+		values
+		(#{resourceAuditStatus,jdbcType=VARCHAR},#{resourceAuditor,jdbcType=VARCHAR},#{resourceAuditTime,jdbcType=DATE},
+		#{resourceReleaseStatus,jdbcType=VARCHAR},#{resourcePublisher,jdbcType=VARCHAR},#{resourceReleaseTime,jdbcType=DATE},
+		#{creater,jdbcType=VARCHAR},#{createTime,jdbcType=DATE},#{modifier,jdbcType=VARCHAR},
+		#{modifyTime,jdbcType=DATE},#{remarks,jdbcType=VARCHAR})
+	</insert>
+	<delete id="delete" parameterType="int">
+		delete from resource_register_record where resourceId=#{resourceId}
+	</delete>
+	<update id="update" parameterType="com.fineway.rsms.bean.ResourceRegister">
+		update resource_register_record set resourceAuditStatus=#{resourceAuditStatus},resourceAuditor=#{resourceAuditor},resourceAuditTime=#{resourceAuditTime},
+		resourceReleaseStatus=#{resourceReleaseStatus},resourcePublisher=#{resourcePublisher},resourceReleaseTime=#{resourceReleaseTime},creater=#{creater},
+		createTime=#{createTime},modifier=#{modifier},modifyTime=#{modifyTime},remarks=#{remarks}
+		     where resourceId=#{resourceId}
+	</update>
+	<update id="auditResourceInfo" parameterType="com.fineway.rsms.bean.ResourceRegister">
+		update resource_register_record set resourceAuditStatus=#{resourceAuditStatus},resourceAuditor=#{resourceAuditor},resourceAuditTime=#{resourceAuditTime},
+		resourceReleaseStatus=#{resourceReleaseStatus},remarks=#{remarks} where resourceId=#{resourceId}
+	</update>
+	<update id="publishResource" parameterType="com.fineway.rsms.bean.ResourceRegister">
+		update resource_register_record set resourceReleaseStatus=#{resourceReleaseStatus},resourcePublisher=#{resourcePublisher},resourceReleaseTime=#{resourceReleaseTime} where resourceId=#{resourceId}
+	</update>
+	<select id="findByCondition" parameterType="com.fineway.rsms.bean.ResourceRegister" resultMap="resourceRegisterMap">
+		select resourceId,<include refid="property"/>  from resource_register_record where 1=1
+			<if test="resourceId != null and resourceId !=''"> AND resourceId = #{resourceId} </if>
+			<if test="resourceAuditStatus != null and resourceAuditStatus !=''"> AND resourceAuditStatus = #{resourceAuditStatus} </if>
+			<if test="resourceAuditor != null and resourceAuditor !=''"> AND resourceAuditor = #{resourceAuditor} </if>
+			<if test="resourceAuditTime != null"> AND resourceAuditTime = #{resourceAuditTime} </if>
+			<if test="resourceReleaseStatus != null and resourceReleaseStatus !=''"> AND resourceReleaseStatus = #{resourceReleaseStatus} </if>
+			<if test="resourcePublisher != null and resourcePublisher !=''"> AND resourcePublisher = #{resourcePublisher} </if>
+			<if test="resourceReleaseTime != null"> AND resourceReleaseTime = #{resourceReleaseTime} </if>
+			<if test="creater != null and creater !=''"> AND creater = #{creater} </if>
+			<if test="createTime != null"> AND createTime = #{createTime} </if>
+			<if test="modifier != null and modifier !=''"> AND modifier = #{modifier} </if>
+			<if test="modifyTime != null"> AND modifyTime = #{modifyTime} </if>
+			<if test="remarks != null and remarks !=''"> AND remarks = #{remarks} </if>
+	</select>
+	<select id="findById" parameterType="int" resultMap="resourceRegisterMap">
+		select resourceId,<include refid="property"/> from resource_register_record where resourceId=#{resourceId}
+	</select>
+</mapper>
