@@ -11,7 +11,7 @@ public class ResourceVO {
 	private String resourcePublisher;// 资源发布人
 	private Date resourceReleaseTime;// 资源发布时间
 	private String creater;// 创建人
-	private Date createTime;// 创建时间
+	private String createTime;// 创建时间
 	private String modifier;// 修改人
 	private Date modifyTime;// 修改时间
 	private String remarks;// 备注
@@ -22,7 +22,7 @@ public class ResourceVO {
 	private String resourceDescription;// 资源描述
 	private String resourceProvider;// 资源提供人
 	private String resourceInstitution;// 资源所属机构
-
+	
 	public ResourceVO() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -30,7 +30,7 @@ public class ResourceVO {
 
 	public ResourceVO(Integer resourceId, String resourceAuditStatus, String resourceAuditor, Date resourceAuditTime,
 			String resourceReleaseStatus, String resourcePublisher, Date resourceReleaseTime, String creater,
-			Date createTime, String modifier, Date modifyTime, String remarks, Integer resourceInfoId,
+			String createTime, String modifier, Date modifyTime, String remarks, Integer resourceInfoId,
 			String resourceType, String resourceName, String resourceDirectory, String resourceDescription,
 			String resourceProvider, String resourceInstitution) {
 		super();
@@ -119,11 +119,11 @@ public class ResourceVO {
 		this.creater = creater;
 	}
 
-	public Date getCreateTime() {
+	public String getCreateTime() {
 		return createTime;
 	}
 
-	public void setCreateTime(Date createTime) {
+	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
 
@@ -206,5 +206,5 @@ public class ResourceVO {
 	public void setResourceInstitution(String resourceInstitution) {
 		this.resourceInstitution = resourceInstitution;
 	}
-
+	
 }

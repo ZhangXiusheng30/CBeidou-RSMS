@@ -1,5 +1,6 @@
 package com.fineway.rsms.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,8 @@ public class ResourceRegisterServiceImpl implements ResourceRegisterService {
 		ResourceRegister resourceRegister = new ResourceRegister();
 		resourceRegister.setResourceAuditStatus(Constants.DSH);//新增的资源为待审核状态
 		resourceRegister.setCreater("张三");
-		resourceRegister.setCreateTime(new Date());
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");//定义日期类型格式
+		resourceRegister.setCreateTime(format.format(new Date()));
 		this.resourceRegisterMapper.save(resourceRegister);
 		resourceInfo.setResourceId(resourceRegister.getResourceId());
 		this.resourceInfoMapper.save(resourceInfo);
@@ -55,6 +57,7 @@ public class ResourceRegisterServiceImpl implements ResourceRegisterService {
 	public void auditResourceInfo(ResourceRegister resourceRegister) throws Exception {
 		resourceRegister.setResourceAuditor("李四");
 		resourceRegister.setResourceAuditTime(new Date());
+		resourceRegister.setResourceAuditStatus(resourceRegister.getResourceAuditStatus());
 		if(Constants.SHTG.equals(resourceRegister.getResourceAuditStatus())) {
 			//如果审核状态为审核通过，设置资源发布状态为待发布
 			resourceRegister.setResourceReleaseStatus(Constants.DFB);

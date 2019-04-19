@@ -11,7 +11,7 @@
 		<result column="resourcePublisher" jdbcType="VARCHAR" property="resourcePublisher"/>
 		<result column="resourceReleaseTime" jdbcType="DATE" property="resourceReleaseTime"/>
 		<result column="creater" jdbcType="VARCHAR" property="creater"/>
-		<result column="createTime" jdbcType="DATE" property="createTime"/>
+		<result column="createTime" jdbcType="VARCHAR" property="createTime"/>
 		<result column="modifier" jdbcType="VARCHAR" property="modifier"/>
 		<result column="modifyTime" jdbcType="DATE" property="modifyTime"/>
 		<result column="remarks" jdbcType="VARCHAR" property="remarks"/>
@@ -61,6 +61,7 @@
 			<if test="modifier != null and modifier !=''"> AND modifier = #{modifier} </if>
 			<if test="modifyTime != null"> AND modifyTime = #{modifyTime} </if>
 			<if test="remarks != null and remarks !=''"> AND remarks = #{remarks} </if>
+			ORDER BY resourceId DESC 
 	</select>
 	<select id="findById" parameterType="int" resultMap="resourceRegisterMap">
 		select resourceId,<include refid="property"/> from resource_register_record where resourceId=#{resourceId}

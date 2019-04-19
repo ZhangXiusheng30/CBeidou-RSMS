@@ -26,7 +26,7 @@
 		<result column="resourcePublisher" jdbcType="VARCHAR" property="resourcePublisher"/>
 		<result column="resourceReleaseTime" jdbcType="DATE" property="resourceReleaseTime"/>
 		<result column="creater" jdbcType="VARCHAR" property="creater"/>
-		<result column="createTime" jdbcType="DATE" property="createTime"/>
+		<result column="createTime" jdbcType="VARCHAR" property="createTime"/>
 		<result column="modifier" jdbcType="VARCHAR" property="modifier"/>
 		<result column="modifyTime" jdbcType="DATE" property="modifyTime"/>
 		<result column="remarks" jdbcType="VARCHAR" property="remarks"/>
@@ -62,6 +62,7 @@
 			<if test="resourceType != null and resourceType !=''"> AND t1.resourceType = #{resourceType} </if>
 			<if test="resourceName != null and resourceName !=''"> AND t1.resourceName like '%${resourceName}%' </if>
 			<if test="resourceAuditStatus != null and resourceAuditStatus !=''"> AND t.resourceAuditStatus = #{resourceAuditStatus} </if>
+			ORDER BY t.resourceId DESC 
 	</select>
 	<select id="getResourceInfoById" parameterType="int" resultMap="resourceVoMap">
 		SELECT t.resourceId,t1.resourceType,t1.resourceName,t1.resourceProvider,t.createTime,t1.resourceDirectory,t.resourceAuditStatus,t1.resourceInstitution FROM resource_register_record t LEFT JOIN resource_info t1 ON t.resourceId=t1.resourceId where t.resourceId=#{resourceId}
