@@ -58,12 +58,12 @@
 			<if test="resourceInstitution != null and resourceInstitution !=''"> AND resourceInstitution = #{resourceInstitution} </if>
 	</select>
 	<select id="getResourceInfo" parameterType="com.fineway.rsms.vo.ResourceVO" resultMap="resourceVoMap">
-		SELECT t.resourceId,t1.resourceType,t1.resourceName,t1.resourceProvider,t.createTime,t1.resourceDirectory,t.resourceAuditStatus FROM resource_register_record t LEFT JOIN resource_info t1 ON t.resourceId=t1.resourceId where 1=1
+		SELECT t.resourceId,t1.resourceType,t1.resourceName,t1.resourceProvider,t.createTime,t1.resourceDirectory,t.resourceAuditStatus,t1.resourceInstitution FROM resource_register_record t LEFT JOIN resource_info t1 ON t.resourceId=t1.resourceId where 1=1
 			<if test="resourceType != null and resourceType !=''"> AND t1.resourceType = #{resourceType} </if>
 			<if test="resourceName != null and resourceName !=''"> AND t1.resourceName like '%${resourceName}%' </if>
 			<if test="resourceAuditStatus != null and resourceAuditStatus !=''"> AND t.resourceAuditStatus = #{resourceAuditStatus} </if>
 	</select>
 	<select id="getResourceInfoById" parameterType="int" resultMap="resourceVoMap">
-		SELECT t.resourceId,t1.resourceType,t1.resourceName,t1.resourceProvider,t.createTime,t1.resourceDirectory,t.resourceAuditStatus FROM resource_register_record t LEFT JOIN resource_info t1 ON t.resourceId=t1.resourceId where t.resourceId=#{resourceId}
+		SELECT t.resourceId,t1.resourceType,t1.resourceName,t1.resourceProvider,t.createTime,t1.resourceDirectory,t.resourceAuditStatus,t1.resourceInstitution FROM resource_register_record t LEFT JOIN resource_info t1 ON t.resourceId=t1.resourceId where t.resourceId=#{resourceId}
 	</select>
 </mapper>
